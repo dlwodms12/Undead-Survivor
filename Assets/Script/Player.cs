@@ -9,11 +9,13 @@ public class Player : MonoBehaviour
 
     Rigidbody2D rigid;
     SpriteRenderer spriter;
+    Animator anim;
 
     void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
         spriter = GetComponent<SpriteRenderer>();
+        anim = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -31,6 +33,9 @@ public class Player : MonoBehaviour
 
     void LateUpdate()
     {
+        //애니메이션 파라미터 값 할당
+        anim.SetFloat("Speed", inputVec.magnitude);
+
         //반대 방향키가 눌릴 경우 이미지를 좌우반전(flip)
         if(inputVec.x != 0)
         {
