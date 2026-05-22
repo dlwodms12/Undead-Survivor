@@ -18,15 +18,17 @@ public class Reposition : MonoBehaviour
         //타일의 좌표
         Vector3 myPos = transform.position;
 
-        //좌표 간의 거리를 절댓값으로 구해서 저장
+        //플레이어와 타일 간 거리를 절댓값으로 구해서 저장
         float diffx = Mathf.Abs(playerPos.x - myPos.x);
         float diffy = Mathf.Abs(playerPos.y - myPos.y);
 
-        //플레이어의 방향
-        Vector3 playerDir = GameManager.instance.player.inputVec;
-        //방향이 음수를 향하고 있다면 -1을 반환, 그렇지 않다면 1을 반환
-        float dirX = playerDir.x < 0 ? -1 : 1;
-        float dirY = playerDir.y < 0 ? -1 : 1;
+        //플레이어의 방향을 저장
+        float dirX = playerPos.x - myPos.x;
+        float dirY = playerPos.y - myPos.y;
+
+        //방향이 양의 방향이라면 1, 아니라면 -1을 반환
+        dirX = dirX > 0 ? 1 : -1;
+        dirY = dirY > 0 ? 1 : -1;
 
         switch (transform.tag)
         {
