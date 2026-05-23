@@ -22,7 +22,7 @@ public class Spawner : MonoBehaviour
     {
         timer += Time.deltaTime;
         //시간에 흐름에 따라 레벨이 올라감
-        level = Mathf.FloorToInt(GameManager.instance.gameTime / 10f);
+        level = Mathf.Min(Mathf.FloorToInt(GameManager.instance.gameTime / 10f),spawnData.Length-1);
 
         //레벨에 따른 스폰 타임 변경
         if(timer > spawnData[level].spawnTime)
