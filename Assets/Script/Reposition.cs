@@ -4,10 +4,17 @@ using UnityEngine;
 
 public class Reposition : MonoBehaviour
 {
+    Collider2D coll;
+
+    void Awake()
+    {
+        coll = GetComponent<Collider2D>();
+    }
+
     //트리거 바깥으로 나가면 실행
     private void OnTriggerExit2D(Collider2D collision)
     {
-        //바깥쪽으로 나간 콜리전의 태그가 Area가 아니라면(Player 외의 오브젝트가 나간거라면)
+        //바깥쪽으로 나간 콜리전의 태그가 Area가 아니라면
         if(!collision.CompareTag("Area"))
         {
             return;
@@ -15,6 +22,8 @@ public class Reposition : MonoBehaviour
 
         //플레이어의 좌표
         Vector3 playerPos = GameManager.instance.player.transform.position;
+        //플레이어의 방향
+        Vector3 playerDir = GameManager.instance.player.inputVec;
         //타일의 좌표
         Vector3 myPos = transform.position;
 
@@ -46,8 +55,14 @@ public class Reposition : MonoBehaviour
                     transform.Translate(Vector3.up * dirY * 40);
                 }
                 break;
+            //자신의 태그가 Enemy 라면
             case "Enemy":
-
+                //콜라이더가 살아있는 경우(생존 상태인 경우)
+                if (coll.enabled)
+                {
+                    //플레이어 방향으로 20가량 이동(상세 위치는 조금씩 다르게 랜덤 지정)
+                    transform.Translate(playerDir * 20 + new Vector3(Random.Range(-3f,3f), Random.Range(-3f, 3f), 0));
+                }
                 break;
         }
     }
