@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    public float damage;
-    public int per;
+    public float damage; //총알 데미지
+    public int per; //관통력
 
     public void Init(float damage, int per)
     {
