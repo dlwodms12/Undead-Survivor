@@ -8,7 +8,16 @@ public class Weapon : MonoBehaviour
     public int prefabId; //무기 프리팹 ID
     public float damage;  //무기 데미지
     public int count; //소환할 무기 개수
-    public float speed; //무기 회전 속도
+    public float speed; //무기 회전 속도 or 연사속도
+
+    float timer;
+
+    Player player;
+
+    void Awake()
+    {
+        player = GetComponentInParent<Player>();
+    }
 
     private void Start()
     {
@@ -25,6 +34,13 @@ public class Weapon : MonoBehaviour
                 break;
 
             default:
+                //시간을 누적해서 speed보다 시간이 많이 흘렀다면 발사
+                timer += Time.deltaTime;
+                if(timer > speed)
+                {
+                    timer = 0;
+                    Fire();
+                }
 
                 break;
         }
@@ -48,8 +64,6 @@ public class Weapon : MonoBehaviour
         }
     }
 
-
-
     public void Init()
     {
         switch (id)
@@ -61,7 +75,7 @@ public class Weapon : MonoBehaviour
                 break;
 
             default:
-
+                speed = 0.3f; //연사속도
                 break;
         }
     }
@@ -98,7 +112,32 @@ public class Weapon : MonoBehaviour
             //무기를 월드 좌표 기준으로 이동(위로)
             bullet.Translate(bullet.up * 1.5f, Space.World);
             //무기 초기화
-            bullet.GetComponent<Bullet>().Init(damage,-1);  //근접무기이므로 관통력을 -1로 처리
+            bullet.GetComponent<Bullet>().Init(damage,-1, Vector3.zero);  //근접무기이므로 관통력을 -1로 처리
         }
+    }
+
+    void Fire()
+    {
+        //주변에 타겟이 없다면 실행X
+        if (!player.scanner.nearestTarget)
+        {
+            return;
+        }
+
+        //타겟 위치
+        Vector3 targetPos = player.scanner.nearestTarget.position;
+        //타겟 방향
+        Vector3 dir = targetPos - transform.position;
+        //정규화
+        dir = dir.normalized;
+
+        //풀링 호출해서 프리팹 추가
+        Transform bullet = GameManager.instance.pool.Get(prefabId).transform;
+        //총알 소환
+        bullet.position = transform.position;
+        //총알 회전(기준 축, 회전 방향)
+        bullet.rotation = Quaternion.FromToRotation(Vector3.up, dir);
+        //데미지와 관통력, 방향값을 Bullet.cs의 Init 함수에 전달
+        bullet.GetComponent<Bullet>().Init(damage, count, dir);
     }
 }
