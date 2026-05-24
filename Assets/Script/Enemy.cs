@@ -65,6 +65,7 @@ public class Enemy : MonoBehaviour
     }
 
     //레벨링에 따른 Enemy의 변화를 SpawnData를 이용해 반영
+    //Spawner.cs에서 호출
     public void Init(SpawnData data)
     {
         anim.runtimeAnimatorController = animCon[data.spriteType];
@@ -72,4 +73,31 @@ public class Enemy : MonoBehaviour
         maxHealth = data.health;
         health = data.health;
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        //충돌한 것이 총알이 아니라면 무시
+        if (!collision.CompareTag("Bullet"))
+        {
+            return;
+        }
+
+        health -= collision.GetComponent<Bullet>().damage;
+
+        if(health > 0)
+        {
+
+        }
+
+        else
+        {
+            Dead();
+        }
+    }
+
+    void Dead()
+    {
+        gameObject.SetActive(false);
+    }
+
 }
