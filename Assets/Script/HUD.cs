@@ -35,10 +35,12 @@ public class HUD : MonoBehaviour
                 mySlider.value = curExp / maxExp;
                 break;
             case InfoType.Level:
-
+                //UI에 레벨 반영
+                //Format("{반영할 데이터 인덱스 : 소숫점 자리 표시}", 반영할 데이터)
+                myText.text = string.Format("Lv.{0:F0}", GameManager.instance.level);
                 break;
             case InfoType.Kill:
-
+                myText.text = string.Format("{0:F0}", GameManager.instance.kill);
                 break;
             case InfoType.Time:
 
