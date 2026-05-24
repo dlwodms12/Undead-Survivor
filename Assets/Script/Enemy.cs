@@ -17,6 +17,7 @@ public class Enemy : MonoBehaviour
     Rigidbody2D rigid;
     SpriteRenderer spriter;
     Animator anim;
+    WaitForFixedUpdate wait; //코루틴용
 
     // Start is called before the first frame update
     void Awake()
@@ -24,12 +25,14 @@ public class Enemy : MonoBehaviour
         rigid = GetComponent<Rigidbody2D>();
         spriter = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
+        wait = new WaitForFixedUpdate();
     }
 
     void FixedUpdate()
     {
-
-        if(!isLive)
+        //살아 있지 않거나 or Hit 애니메이션이 재생중이라면 이동 물리를 적용하지 않음
+        //GetCurrntAnimatorStateInfo(index) : 현재 실행중인 애니메이션 레이어 정보를 가져옴
+        if(!isLive || anim.GetCurrentAnimatorStateInfo(0).IsName("Hit"))
         {
             return;
         }
@@ -82,17 +85,33 @@ public class Enemy : MonoBehaviour
             return;
         }
 
+        //총알 데미지만큼 체력 감소
         health -= collision.GetComponent<Bullet>().damage;
+
+        //넉백 적용
+        StartCoroutine(KnockBack());
 
         if(health > 0)
         {
-
+            //히트액션
+            anim.SetTrigger("Hit");
         }
 
         else
         {
             Dead();
         }
+    }
+
+    //코루틴 반환형 인터페이스
+    IEnumerator KnockBack()
+    {
+        yield return wait; // 다음 하나의 물리 프레임까지 대기
+        Vector3 playerPos = GameManager.instance.player.transform.position;
+        Vector3 dirVec = transform.position - playerPos;
+        //플레이어 반대 방향으로 넉백
+        rigid.AddForce(dirVec.normalized * 3, ForceMode2D.Impulse);
+
     }
 
     void Dead()
