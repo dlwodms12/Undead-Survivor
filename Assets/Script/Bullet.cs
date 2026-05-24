@@ -49,4 +49,14 @@ public class Bullet : MonoBehaviour
         }
     }
 
+    //총알이 영역 바깥을 벗어날 경우 반환
+    void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.CompareTag("Area"))
+        {
+            rigid.velocity = Vector2.zero;
+            gameObject.SetActive(false);
+        }
+    }
+
 }
