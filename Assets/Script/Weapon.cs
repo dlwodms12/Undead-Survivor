@@ -50,11 +50,18 @@ public class Weapon : MonoBehaviour
     {
         for(int index = 0; index < count; index++)
         {
-            //지역 변수로 받아서 부모 변경(Weapon으로)
+            //지역 변수로 받아서 부모 변경(Weapon으로) 후 추가
             Transform bullet = GameManager.instance.pool.Get(prefabId).transform;
             bullet.parent = transform;
+            
+            //무기 회전 값
+            Vector3 rotVec = Vector3.forward * 360 * index / count;
+            //무기 회전
+            bullet.Rotate(rotVec);
+            //무기를 월드 좌표 기준으로 이동(위로)
+            bullet.Translate(bullet.up * 1.5f, Space.World);
+            //무기 초기화
             bullet.GetComponent<Bullet>().Init(damage,-1);  //근접무기이므로 관통력을 -1로 처리
-
         }
     }
 }
