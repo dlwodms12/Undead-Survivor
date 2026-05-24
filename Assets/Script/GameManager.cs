@@ -29,6 +29,12 @@ public class GameManager : MonoBehaviour
         instance = this;
     }
 
+    private void Start()
+    {
+        //체력 초기화
+        health = maxHealth;
+    }
+
     void Update()
     {
         gameTime += Time.deltaTime;
