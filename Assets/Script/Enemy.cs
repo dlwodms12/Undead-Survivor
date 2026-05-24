@@ -86,8 +86,8 @@ public class Enemy : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        //충돌한 것이 총알이 아니라면 무시
-        if (!collision.CompareTag("Bullet"))
+        //충돌한 것이 총알이 아님 or 죽은 상태라면 실행하지 않음
+        if (!collision.CompareTag("Bullet") || !isLive)
         {
             return;
         }
@@ -111,6 +111,10 @@ public class Enemy : MonoBehaviour
             rigid.simulated = false;
             spriter.sortingOrder = 1;
             anim.SetBool("Dead", true);
+
+            //게임 데이터
+            GameManager.instance.kill++;
+            GameManager.instance.GetExp();
         }
     }
 
