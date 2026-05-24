@@ -28,7 +28,27 @@ public class Weapon : MonoBehaviour
 
                 break;
         }
+
+        //Test Code
+        if (Input.GetButtonDown("Jump"))
+        {
+            LevelUp(20, 5);
+        }
+
     }
+
+    public void LevelUp(float damage, int count)
+    {
+        this.damage = damage;
+        this.count += count;
+
+        if(id == 0)
+        {
+            Batch();
+        }
+    }
+
+
 
     public void Init()
     {
@@ -50,10 +70,27 @@ public class Weapon : MonoBehaviour
     {
         for(int index = 0; index < count; index++)
         {
-            //지역 변수로 받아서 부모 변경(Weapon으로) 후 추가
-            Transform bullet = GameManager.instance.pool.Get(prefabId).transform;
-            bullet.parent = transform;
+            //무기를 받을 지역변수
+            Transform bullet;
             
+            //자식을 가지고 있다면(이미 무기가 있다면)
+            if(index < transform.childCount)
+            {
+                //기존에 있는 무기를 먼저 사용함
+                bullet = transform.GetChild(index);
+            }
+            else
+            {
+                //모자란 무기는 풀링 호출해서 지역 변수로 받아서 
+                bullet = GameManager.instance.pool.Get(prefabId).transform;
+                //자식으로 추가
+                bullet.parent = transform;
+            }
+
+            //위치 초기화
+            bullet.localPosition = Vector3.zero; //플레이어의 위치
+            bullet.localRotation = Quaternion.identity;
+
             //무기 회전 값
             Vector3 rotVec = Vector3.forward * 360 * index / count;
             //무기 회전
