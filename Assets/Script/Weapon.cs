@@ -98,6 +98,11 @@ public class Weapon : MonoBehaviour
                 break;
         }
 
+        // Hand Set
+        Hand hand = player.hands[(int)data.itemType];
+        hand.spriter.sprite = data.hand;
+        hand.gameObject.SetActive(true);
+
         //가지고 있는 모든 자식에게서 ApplyGear 함수 실행
         player.BroadcastMessage("ApplyGear", SendMessageOptions.DontRequireReceiver);
     }
