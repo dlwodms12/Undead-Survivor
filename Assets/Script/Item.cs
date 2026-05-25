@@ -24,11 +24,12 @@ public class Item : MonoBehaviour
         icon.sprite = data.itemIcon;
 
         Text[] texts = GetComponentsInChildren<Text>();
-        //계층구조 순서에 따라 값을 가져오기
+        //계층구조 순서에 따라 텍스트 컴포넌트를 가져와 할당
         textLevel = texts[0];
         textName = texts[1];
         textDesc = texts[2];
 
+        //아이템 이름 출력
         textName.text = data.itemName;
     }
 
