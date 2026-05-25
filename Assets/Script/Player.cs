@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -26,18 +27,27 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //게임이 정지한 상태라면 업데이트 중단
+        if (!GameManager.instance.isLive) { return; }
+
         inputVec.x = Input.GetAxisRaw("Horizontal");
         inputVec.y = Input.GetAxisRaw("Vertical");
     }
 
     void FixedUpdate()
     {
+        //게임이 정지한 상태라면 업데이트 중단
+        if (!GameManager.instance.isLive) { return; }
+
         Vector2 nextVec = inputVec.normalized * speed * Time.fixedDeltaTime;
         rigid.MovePosition(rigid.position + nextVec);
     }
 
     void LateUpdate()
     {
+        //게임이 정지한 상태라면 업데이트 중단
+        if (!GameManager.instance.isLive) { return; }
+
         //애니메이션 파라미터 값 할당
         anim.SetFloat("Speed", inputVec.magnitude);
 

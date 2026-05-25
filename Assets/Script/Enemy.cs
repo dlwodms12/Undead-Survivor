@@ -32,9 +32,12 @@ public class Enemy : MonoBehaviour
 
     void FixedUpdate()
     {
+        //게임이 정지한 상태라면 업데이트 중단
+        if (!GameManager.instance.isLive) { return; }
+
         //살아 있지 않거나 or Hit 애니메이션이 재생중이라면 이동 물리를 적용하지 않음
         //GetCurrntAnimatorStateInfo(index) : 현재 실행중인 애니메이션 레이어 정보를 가져옴
-        if(!isLive || anim.GetCurrentAnimatorStateInfo(0).IsName("Hit"))
+        if (!isLive || anim.GetCurrentAnimatorStateInfo(0).IsName("Hit"))
         {
             return;
         }
@@ -54,6 +57,9 @@ public class Enemy : MonoBehaviour
 
     void LateUpdate()
     {
+        //게임이 정지한 상태라면 업데이트 중단
+        if (!GameManager.instance.isLive) { return; }
+
         if (!isLive)
         {
             return;

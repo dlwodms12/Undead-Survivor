@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     [Header("# Game Control")]
     public float gameTime;
     public float maxGameTime = 2 * 10f;
+    public bool isLive;
 
     [Header("# Player Info")]
     public int health;
@@ -34,10 +35,16 @@ public class GameManager : MonoBehaviour
     {
         //체력 초기화
         health = maxHealth;
+
+        //Test Code
+        uiLevelUp.Select(0);
     }
 
     void Update()
     {
+        //게임이 정지한 상태라면 업데이트 중단
+        if (!isLive) { return; }
+
         gameTime += Time.deltaTime;
 
         if (gameTime > maxGameTime)
@@ -56,5 +63,19 @@ public class GameManager : MonoBehaviour
             exp = 0;
             uiLevelUp.Show();
         }
+    }
+
+    public void Stop()
+    {
+        //게임 정지
+        isLive = false; 
+        Time.timeScale = 0;
+    }
+
+    public void Resume()
+    {
+        //게임 재생
+        isLive = true;
+        Time.timeScale = 1;
     }
 }

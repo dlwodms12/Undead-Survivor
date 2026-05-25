@@ -22,6 +22,9 @@ public class Weapon : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //게임이 정지한 상태라면 업데이트 중단
+        if (!GameManager.instance.isLive) { return; }
+
         switch (id)
         {
             case 0:

@@ -20,6 +20,9 @@ public class Spawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //게임이 정지한 상태라면 업데이트 중단
+        if (!GameManager.instance.isLive) { return; }
+
         timer += Time.deltaTime;
         //시간에 흐름에 따라 레벨이 올라감
         level = Mathf.Min(Mathf.FloorToInt(GameManager.instance.gameTime / 10f),spawnData.Length-1);
