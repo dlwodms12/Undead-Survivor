@@ -57,7 +57,9 @@ public class Item : MonoBehaviour
                     //Weapon.cs의 LevelUp 함수 호출
                     weapon.LevelUp(nextDamage, nextCount);
                 }
-                    break;
+
+                level++;
+                break;
 
             case ItemData.ItemType.Glove:
             case ItemData.ItemType.Shoe:
@@ -72,12 +74,12 @@ public class Item : MonoBehaviour
                     float nextRate = data.damages[level];
                     gear.LevelUp(nextRate);
                 }
-                    break;
+                level++;
+                break;
             case ItemData.ItemType.Heal:
+                GameManager.instance.health = GameManager.instance.maxHealth;
                 break;
         }
-
-        level++;
 
         //최대 레벨에 도달한 경우
         if(level == data.damages.Length)

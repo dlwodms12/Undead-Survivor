@@ -57,6 +57,8 @@ public class Weapon : MonoBehaviour
         {
             Batch();
         }
+
+        player.BroadcastMessage("ApplyGear", SendMessageOptions.DontRequireReceiver);
     }
 
     public void Init(ItemData data)
@@ -92,10 +94,14 @@ public class Weapon : MonoBehaviour
                 break;
 
             default:
-                speed = 0.3f; //연사속도
+                speed = 0.4f; //연사속도
                 break;
         }
+
+        //가지고 있는 모든 자식에게서 ApplyGear 함수 실행
+        player.BroadcastMessage("ApplyGear", SendMessageOptions.DontRequireReceiver);
     }
+
 
     void Batch()
     {
