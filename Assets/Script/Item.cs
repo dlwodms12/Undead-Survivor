@@ -12,6 +12,8 @@ public class Item : MonoBehaviour
 
     Image icon;
     Text textLevel;
+    Text textName;
+    Text textDesc;
 
     private void Awake()
     {
@@ -22,12 +24,37 @@ public class Item : MonoBehaviour
         icon.sprite = data.itemIcon;
 
         Text[] texts = GetComponentsInChildren<Text>();
+        //계층구조 순서에 따라 값을 가져오기
         textLevel = texts[0];
+        textName = texts[1];
+        textDesc = texts[2];
+
+        textName.text = data.itemName;
     }
 
-    private void LateUpdate()
+    private void OnEnable()
     {
         textLevel.text = "Lv." + (level + 1);
+
+        switch (data.itemType)
+        {
+            //무기의 경우 데미지 증가 수치와 회전체/관통력 증가 수치를 알려줘야 함
+            case ItemData.ItemType.Melee:
+            case ItemData.ItemType.Range:
+                textDesc.text = string.Format(data.itemDesc, data.damages[level] * 100, data.counts[level]);
+                break;
+            //장갑과 신발의 경우 연사/이동 속도 증가 수치를 알려줘야 함
+            case ItemData.ItemType.Glove:
+            case ItemData.ItemType.Shoe:
+                textDesc.text = string.Format(data.itemDesc, data.damages[level] * 100);
+                break;
+            //음료의 경우 아이템 설명만 있으면 됨
+            default:
+                textDesc.text = string.Format(data.itemDesc);
+                break;
+        }
+
+        
     }
 
     public void OnClick()
