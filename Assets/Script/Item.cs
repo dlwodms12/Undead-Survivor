@@ -8,6 +8,7 @@ public class Item : MonoBehaviour
     public ItemData data;
     public int level;
     public Weapon weapon;
+    public Gear gear;
 
     Image icon;
     Text textLevel;
@@ -56,13 +57,22 @@ public class Item : MonoBehaviour
                     //Weapon.cs의 LevelUp 함수 호출
                     weapon.LevelUp(nextDamage, nextCount);
                 }
-
                     break;
 
             case ItemData.ItemType.Glove:
-                break;
             case ItemData.ItemType.Shoe:
-                break;
+                if(level == 0)
+                {
+                    GameObject newGear = new GameObject();
+                    gear = newGear.AddComponent<Gear>();
+                    gear.Init(data);
+                }
+                else
+                {
+                    float nextRate = data.damages[level];
+                    gear.LevelUp(nextRate);
+                }
+                    break;
             case ItemData.ItemType.Heal:
                 break;
         }
