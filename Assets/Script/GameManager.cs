@@ -56,8 +56,8 @@ public class GameManager : MonoBehaviour
     public void GetExp()
     {
         exp++;
-
-        if(exp >= nextExp[level])
+        //최대레벨(10)을 초과할 경우 nextExp[9]를 유지
+        if(exp >= nextExp[Mathf.Min(level, nextExp.Length-1)])
         {
             level++;
             exp = 0;
