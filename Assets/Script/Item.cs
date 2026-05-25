@@ -35,8 +35,29 @@ public class Item : MonoBehaviour
         {
             case ItemData.ItemType.Melee:
             case ItemData.ItemType.Range:
+                //아이템 레벨이 0일 경우 새로운 무기 오브젝트 생성
+                if(level == 0)
+                {
+                    //타입에 맞는 무기로 초기화
+                    GameObject newWeapon = new GameObject();
+                    weapon = newWeapon.AddComponent<Weapon>();
+                    weapon.Init(data);
+                }
+                else
+                {
+                    //이미 기존 무기가 있을 경우
+                    float nextDamage = data.baseDamage;
+                    int nextCount = 0;
 
-                break;
+                    //레벨에 비례한 가중치(ItemData)에 맞게 데미지 상승
+                    nextDamage += data.baseDamage * data.damages[level];
+                    nextCount += data.counts[level];
+
+                    //Weapon.cs의 LevelUp 함수 호출
+                    weapon.LevelUp(nextDamage, nextCount);
+                }
+
+                    break;
 
             case ItemData.ItemType.Glove:
                 break;

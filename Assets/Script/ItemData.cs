@@ -25,7 +25,7 @@ public class ItemData : ScriptableObject
     public float baseDamage; //기본 데미지
     public int baseCount;  //근접은 주변을 도는 오브젝트 수, 원거리는 관통력
     public float[] damages; //레벨별 데미지를 저장할 배열
-    public float[] counts;  //레벨별 카운트를 저장할 배열
+    public int[] counts;  //레벨별 카운트를 저장할 배열
 
     [Header("# Weapon")]
     public GameObject projectile;
