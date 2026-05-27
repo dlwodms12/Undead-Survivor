@@ -26,7 +26,8 @@ public class GameManager : MonoBehaviour
     public PoolManager pool;
     public Player player;
     public LevelUp uiLevelUp;
-    public GameObject uiResult; //게임 결과창 컨트롤
+    public Result uiResult; //게임 결과창 컨트롤
+    public GameObject enemyCleaner;
 
     private void Awake()
     {
@@ -42,13 +43,16 @@ public class GameManager : MonoBehaviour
         //Test Code
         uiLevelUp.Select(0);
 
-        isLive = true;
+        Resume();
+        
     }
 
     public void GameRetry()
     {
         //씬 다시 불러오기
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene("Main");
+
+        
     }
 
     public void GameOver()
@@ -63,7 +67,28 @@ public class GameManager : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
 
-        uiResult.SetActive(true);
+        uiResult.gameObject.SetActive(true);
+        uiResult.Lose();
+
+        Stop();
+    }
+
+    public void GameVictory()
+    {
+        StartCoroutine(GameVictoryRoutine());
+    }
+
+    //게임 오버처리하기까지의 시간을 벌기 위한 코루틴
+    IEnumerator GameVictoryRoutine()
+    {
+        isLive = false;
+
+        enemyCleaner.SetActive(true);
+
+        yield return new WaitForSeconds(0.5f);
+
+        uiResult.gameObject.SetActive(true);
+        uiResult.Win();
 
         Stop();
     }
@@ -78,12 +103,17 @@ public class GameManager : MonoBehaviour
         if (gameTime > maxGameTime)
         {
             gameTime = maxGameTime;
+            GameVictory();
         }
     }
 
     public void GetExp()
     {
+        //게임이 정지한 상태라면 업데이트 중단
+        if (!isLive) { return; }
+
         exp++;
+
         //최대레벨(10)을 초과할 경우 nextExp[9]를 유지
         if(exp >= nextExp[Mathf.Min(level, nextExp.Length-1)])
         {
