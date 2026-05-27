@@ -29,7 +29,11 @@ public class Player : MonoBehaviour
     //활성화될 때 캐릭터 ID에 맞는 애니메이션 컨트롤러 작동
     private void OnEnable()
     {
+        //Character 에 따라 speed 값을 조정
+        speed *= Character.Speed;
+        
         anim.runtimeAnimatorController = animcon[GameManager.instance.playerId];
+
     }
 
     // Update is called once per frame
