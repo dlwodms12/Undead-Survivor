@@ -31,13 +31,16 @@ public class GameManager : MonoBehaviour
         instance = this;
     }
 
-    private void Start()
+    //Start버튼에서 컨트롤 할 수 있도록 public 으로 선언
+    public void GameStart()
     {
         //체력 초기화
         health = maxHealth;
 
         //Test Code
         uiLevelUp.Select(0);
+
+        isLive = true;
     }
 
     void Update()
