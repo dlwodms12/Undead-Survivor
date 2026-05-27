@@ -9,6 +9,8 @@ public class Player : MonoBehaviour
     public float speed;
     public Scanner scanner;
     public Hand[] hands;
+    public RuntimeAnimatorController[] animcon;
+
 
     Rigidbody2D rigid;
     SpriteRenderer spriter;
@@ -22,6 +24,12 @@ public class Player : MonoBehaviour
         scanner = GetComponent<Scanner>();
         //불러오면서 비활성화된 오브젝트 활성화
         hands = GetComponentsInChildren<Hand>(true);
+    }
+
+    //활성화될 때 캐릭터 ID에 맞는 애니메이션 컨트롤러 작동
+    private void OnEnable()
+    {
+        anim.runtimeAnimatorController = animcon[GameManager.instance.playerId];
     }
 
     // Update is called once per frame

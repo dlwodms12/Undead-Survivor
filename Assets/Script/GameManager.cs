@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     public bool isLive;
 
     [Header("# Player Info")]
+    public int playerId; //캐릭터 선택할 때 사용할 ID
     public float health;
     public float maxHealth = 100;
     public int level;
@@ -35,13 +36,19 @@ public class GameManager : MonoBehaviour
     }
 
     //Start버튼에서 컨트롤 할 수 있도록 public 으로 선언
-    public void GameStart()
+    public void GameStart(int id)
     {
+        //캐릭터 선택
+        playerId = id;
+
         //체력 초기화
         health = maxHealth;
 
-        //Test Code
-        uiLevelUp.Select(0);
+        player.gameObject.SetActive(true);
+
+        //기본 무기 지급
+        //무기 종류가 두가지 뿐이므로 %2 연산을 통해 무기 범위를 0과 1로 제한
+        uiLevelUp.Select(playerId % 2);
 
         Resume();
         
