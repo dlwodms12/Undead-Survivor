@@ -42,8 +42,11 @@ public class Bullet : MonoBehaviour
         //관통이 -1까지 낮아지면
         if(per == -1)
         {
-            //벡터값을 0로 초기화하고
-            rigid.velocity = Vector2.zero;
+            //enemyCleaner에서 발사한 총알이 아니라면 총알 정지
+            if (rigid.bodyType != RigidbodyType2D.Static)
+            {
+                rigid.velocity = Vector2.zero;
+            }
             //풀링에 반환
             gameObject.SetActive(false);
         }
@@ -54,7 +57,13 @@ public class Bullet : MonoBehaviour
     {
         if (other.CompareTag("Area"))
         {
-            rigid.velocity = Vector2.zero;
+            //RigidbodyType2D.Static = enemyCleaner 속성
+            //enemyCleaner에서 발사하는 총알이 아니라면 총알 정지
+            if (rigid.bodyType != RigidbodyType2D.Static)
+            {
+                rigid.velocity = Vector2.zero;
+            }
+            
             gameObject.SetActive(false);
         }
     }
