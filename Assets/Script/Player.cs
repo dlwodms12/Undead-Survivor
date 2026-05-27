@@ -57,4 +57,26 @@ public class Player : MonoBehaviour
             spriter.flipX = inputVec.x < 0;
         }
     }
+
+    //피격 판정
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        if(!GameManager.instance.isLive) { return; }
+
+        GameManager.instance.health -= Time.deltaTime * 10;
+
+        if(GameManager.instance.health < 0)
+        {
+            //player의 자식인 Shadow와 Area는 건너뛰고 선택하기 위해 index = 2 부터 시작
+            for(int index = 2; index < transform.childCount; index++)
+            {
+                //자식들 비활성화
+                transform.GetChild(index).gameObject.SetActive(false);
+            }
+
+            //Dead 애니메이션 재생
+            anim.SetTrigger("Dead");
+        }
+
+    }
 }
