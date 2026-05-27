@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 
 public class GameManager : MonoBehaviour
@@ -25,6 +26,7 @@ public class GameManager : MonoBehaviour
     public PoolManager pool;
     public Player player;
     public LevelUp uiLevelUp;
+    public GameObject uiResult; //게임 결과창 컨트롤
 
     private void Awake()
     {
@@ -41,6 +43,29 @@ public class GameManager : MonoBehaviour
         uiLevelUp.Select(0);
 
         isLive = true;
+    }
+
+    public void GameRetry()
+    {
+        //씬 다시 불러오기
+        SceneManager.LoadScene(0);
+    }
+
+    public void GameOver()
+    {
+        StartCoroutine(GameOverRoutine());
+    }
+
+    //게임 오버처리하기까지의 시간을 벌기 위한 코루틴
+    IEnumerator GameOverRoutine()
+    {
+        isLive = false;
+
+        yield return new WaitForSeconds(0.5f);
+
+        uiResult.SetActive(true);
+
+        Stop();
     }
 
     void Update()
