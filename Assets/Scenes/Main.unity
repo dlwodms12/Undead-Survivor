@@ -7807,8 +7807,8 @@ RectTransform:
   m_GameObject: {fileID: 814347558}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 6012044427294409540}
   m_Father: {fileID: 1855928353}
@@ -25723,8 +25723,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_ActionEvents: []
-  m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
+  m_NeverAutoSwitchControlSchemes: 1
+  m_DefaultControlScheme: Gamepad
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
@@ -25772,6 +25772,7 @@ MonoBehaviour:
   uiLevelUp: {fileID: 2115134209}
   uiResult: {fileID: 1126085555}
   enemyCleaner: {fileID: 1679639439}
+  uiJoy: {fileID: 814347559}
 --- !u!4 &1993936740
 Transform:
   m_ObjectHideFlags: 0

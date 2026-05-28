@@ -29,6 +29,8 @@ public class GameManager : MonoBehaviour
     public LevelUp uiLevelUp;
     public Result uiResult; //게임 결과창 컨트롤
     public GameObject enemyCleaner;
+    public Transform uiJoy;
+
 
     private void Awake()
     {
@@ -147,6 +149,7 @@ public class GameManager : MonoBehaviour
         //게임 정지
         isLive = false; 
         Time.timeScale = 0;
+        uiJoy.localScale = Vector3.zero;
     }
 
     public void Resume()
@@ -154,5 +157,6 @@ public class GameManager : MonoBehaviour
         //게임 재생
         isLive = true;
         Time.timeScale = 1;
+        uiJoy.localScale = Vector3.one;
     }
 }
