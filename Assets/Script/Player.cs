@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using UnityEngine;
+using UnityEngine.InputSystem;
+
 
 public class Player : MonoBehaviour
 {
@@ -36,22 +38,12 @@ public class Player : MonoBehaviour
 
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        //게임이 정지한 상태라면 업데이트 중단
-        if (!GameManager.instance.isLive) { return; }
-
-        inputVec.x = Input.GetAxisRaw("Horizontal");
-        inputVec.y = Input.GetAxisRaw("Vertical");
-    }
-
     void FixedUpdate()
     {
         //게임이 정지한 상태라면 업데이트 중단
         if (!GameManager.instance.isLive) { return; }
 
-        Vector2 nextVec = inputVec.normalized * speed * Time.fixedDeltaTime;
+        Vector2 nextVec = inputVec * speed * Time.fixedDeltaTime;
         rigid.MovePosition(rigid.position + nextVec);
     }
 
@@ -91,6 +83,10 @@ public class Player : MonoBehaviour
             //게임 오버 호출
             GameManager.instance.GameOver();
         }
+    }
 
+    private void OnMove(InputValue value)
+    {
+        inputVec = value.Get<Vector2>();
     }
 }
