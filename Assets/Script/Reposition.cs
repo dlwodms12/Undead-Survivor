@@ -27,24 +27,25 @@ public class Reposition : MonoBehaviour
         //타일의 좌표
         Vector3 myPos = transform.position;
 
-        //플레이어와 타일 간 거리를 절댓값으로 구해서 저장
-        float diffx = Mathf.Abs(playerPos.x - myPos.x);
-        float diffy = Mathf.Abs(playerPos.y - myPos.y);
-
-        //플레이어의 방향을 저장
-        float dirX = playerPos.x - myPos.x;
-        float dirY = playerPos.y - myPos.y;
-
-        //방향이 양의 방향이라면 1, 아니라면 -1을 반환
-        dirX = dirX > 0 ? 1 : -1;
-        dirY = dirY > 0 ? 1 : -1;
-
         switch (transform.tag)
         {
             //자신의 태그가 Ground 라면
             case "Ground":
+
+                //플레이어와 타일 간 거리 저장
+                float diffx = playerPos.x - myPos.x;
+                float diffy = playerPos.y - myPos.y;
+
+                //플레이어가 타일보다 왼쪽에 있을 경우 음수, 아니라면 양수를 저장
+                float dirX = diffx < 0 ? -1 : 1;
+                float dirY = diffy < 0 ? -1 : 1;
+
+                //거리를 절대값으로 저장
+                diffx = Mathf.Abs(diffx);
+                diffy = Mathf.Abs(diffy);
+
                 //플레이어가 x축 방향으로 더 많이 이동했다면
-                if(diffx > diffy)
+                if (diffx > diffy)
                 {
                     //플레이어 방향으로 x축을 따라 40만큼 현재 타일을 이동
                     transform.Translate(Vector3.right * dirX * 40);
