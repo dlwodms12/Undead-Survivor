@@ -20,8 +20,7 @@ public class Reposition : MonoBehaviour
         }
         //플레이어의 좌표
         Vector3 playerPos = GameManager.instance.player.transform.position;
-        //플레이어의 방향
-        Vector3 playerDir = GameManager.instance.player.inputVec;
+        
         //타일의 좌표
         Vector3 myPos = transform.position;
 
