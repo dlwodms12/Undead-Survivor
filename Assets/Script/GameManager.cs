@@ -31,7 +31,6 @@ public class GameManager : MonoBehaviour
     public GameObject enemyCleaner;
     public Transform uiJoy;
 
-
     private void Awake()
     {
         instance = this;
