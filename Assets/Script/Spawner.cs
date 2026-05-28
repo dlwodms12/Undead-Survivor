@@ -8,6 +8,8 @@ public class Spawner : MonoBehaviour
     public Transform[] spawnPoint;
     public SpawnData[] spawnData;
 
+    public float levelTime;
+
     int level;
     float timer;
 
@@ -15,6 +17,9 @@ public class Spawner : MonoBehaviour
     {
         //Spawner의 본인 + 자식 컴포넌트(스폰 포인트)를 가져와서 배열에 할당
         spawnPoint = GetComponentsInChildren<Transform>();
+
+        //게임 최대 시간을 몬스터 데이터 크기로 나누어 자동으로 레벨 구간을 계산
+        levelTime = GameManager.instance.maxGameTime / spawnData.Length;
     }
 
     // Update is called once per frame
@@ -25,7 +30,7 @@ public class Spawner : MonoBehaviour
 
         timer += Time.deltaTime;
         //시간에 흐름에 따라 레벨이 올라감
-        level = Mathf.Min(Mathf.FloorToInt(GameManager.instance.gameTime / 10f),spawnData.Length-1);
+        level = Mathf.Min(Mathf.FloorToInt(GameManager.instance.gameTime / levelTime),spawnData.Length-1);
 
         //레벨에 따른 스폰 타임 변경
         if(timer > spawnData[level].spawnTime)
