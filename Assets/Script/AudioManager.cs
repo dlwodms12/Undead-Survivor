@@ -76,11 +76,18 @@ public class AudioManager : MonoBehaviour
                 continue;
             }
 
+            int ranIndex = 0;
+            //효과음이 두종류일 경우 한개를 랜덤재생
+            if(sfx == Sfx.Hit || sfx == Sfx.Melee)
+            {
+                ranIndex = Random.Range(0, 2);
+            }
+
             //최근 플레이한 채널을 갱신
             channelIndex = loopIndex;
 
             //비어있는 채널을 발견했다면 효과음을 재생
-            sfxPlayers[loopIndex].clip = sfxClips[(int)sfx];
+            sfxPlayers[loopIndex].clip = sfxClips[(int)sfx + ranIndex];
             sfxPlayers[loopIndex].Play();
             break;
         }
