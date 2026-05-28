@@ -21,6 +21,7 @@ public class LevelUp : MonoBehaviour
 
         //오디오 재생 시작
         AudioManager.instance.PlaySfx(AudioManager.Sfx.LevelUp);
+        AudioManager.instance.EffectBgm(true);
     }
 
     public void Hide()
@@ -30,6 +31,7 @@ public class LevelUp : MonoBehaviour
 
         //오디오 재생 시작
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Select);
+        AudioManager.instance.EffectBgm(false);
     }
     //기본 무기 장착을 위한 선택 함수
     public void Select(int index)

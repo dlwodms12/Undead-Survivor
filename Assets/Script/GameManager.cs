@@ -53,6 +53,7 @@ public class GameManager : MonoBehaviour
         Resume();
 
         //오디오 재생 시작
+        AudioManager.instance.PlayBgm(true);
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Select);
         
     }
@@ -83,6 +84,7 @@ public class GameManager : MonoBehaviour
         Stop();
 
         //오디오 재생 시작
+        AudioManager.instance.PlayBgm(false);
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Lose);
     }
 
@@ -106,6 +108,7 @@ public class GameManager : MonoBehaviour
         Stop();
 
         //오디오 재생 시작
+        AudioManager.instance.PlayBgm(false);
         AudioManager.instance.PlaySfx(AudioManager.Sfx.Win);
     }
 
