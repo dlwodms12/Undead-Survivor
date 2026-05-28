@@ -10,7 +10,6 @@ public class Reposition : MonoBehaviour
     {
         coll = GetComponent<Collider2D>();
     }
-
     //트리거 바깥으로 나가면 실행
     private void OnTriggerExit2D(Collider2D collision)
     {
@@ -19,7 +18,6 @@ public class Reposition : MonoBehaviour
         {
             return;
         }
-
         //플레이어의 좌표
         Vector3 playerPos = GameManager.instance.player.transform.position;
         //플레이어의 방향
@@ -61,8 +59,10 @@ public class Reposition : MonoBehaviour
                 //콜라이더가 살아있는 경우(생존 상태인 경우)
                 if (coll.enabled)
                 {
-                    //플레이어 방향으로 20가량 이동(상세 위치는 조금씩 다르게 랜덤 지정)
-                    transform.Translate(playerDir * 20 + new Vector3(Random.Range(-3f,3f), Random.Range(-3f, 3f), 0));
+                    Vector3 dist = playerPos - myPos;
+                    Vector3 ran = new Vector3(Random.Range(-3, 3), Random.Range(-3, 3), 0);
+                    //타일의 이동 거리만큼 몬스터도 함께 이동(약간의 랜덤 위치 포함)
+                    transform.Translate(ran + dist * 2);
                 }
                 break;
         }
