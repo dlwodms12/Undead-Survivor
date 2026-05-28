@@ -64,8 +64,11 @@ public class GameManager : MonoBehaviour
     {
         //씬 다시 불러오기
         SceneManager.LoadScene("Main");
-
-        
+    }
+    //게임 종료
+    public void GameQuit()
+    {
+        Application.Quit();
     }
 
     public void GameOver()
