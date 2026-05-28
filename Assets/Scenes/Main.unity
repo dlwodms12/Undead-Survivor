@@ -15463,7 +15463,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 10000000
-  per: -1
+  per: -100
 --- !u!61 &1679639441
 BoxCollider2D:
   m_ObjectHideFlags: 0

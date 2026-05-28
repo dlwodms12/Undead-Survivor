@@ -139,7 +139,7 @@ public class Weapon : MonoBehaviour
             //무기를 월드 좌표 기준으로 이동(위로)
             bullet.Translate(bullet.up * 1.5f, Space.World);
             //무기 초기화
-            bullet.GetComponent<Bullet>().Init(damage,-1, Vector3.zero);  //근접무기이므로 관통력을 -1로 처리
+            bullet.GetComponent<Bullet>().Init(damage,-100, Vector3.zero);  //근접무기이므로 관통력을 -100으로 처리
         }
     }
 

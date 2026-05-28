@@ -21,7 +21,7 @@ public class Bullet : MonoBehaviour
         this.per = per;
 
         //근접 무기는 제외
-        if(per > -1)
+        if(per >= 0)
         {
             //총알에 벡터값 부여(방향+속도)
             rigid.velocity = dir*15f;
@@ -31,7 +31,7 @@ public class Bullet : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         //Enemy 태그가 아니거나 근접무기인 경우 아래 코드 실행X
-        if (!collision.CompareTag("Enemy") || per == -1)
+        if (!collision.CompareTag("Enemy") || per == -100)
         {
             return;
         }
@@ -39,8 +39,8 @@ public class Bullet : MonoBehaviour
         //관통할 경우 관통값 --
         per--;
 
-        //관통이 -1까지 낮아지면
-        if(per == -1)
+        //관통이 0보다 낮아지면
+        if(per < 0)
         {
             //enemyCleaner에서 발사한 총알이 아니라면 총알 정지
             if (rigid.bodyType != RigidbodyType2D.Static)
