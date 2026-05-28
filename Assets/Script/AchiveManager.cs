@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class AchiveManager : MonoBehaviour
@@ -61,8 +62,35 @@ public class AchiveManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
-        
+        foreach(Achive achive in achives)
+        {
+            CheckAchive(achive);
+        }
+    }
+
+    void CheckAchive(Achive achive)
+    {
+        bool isAchive = false;
+
+        //각 조건에 따른 업적 해금 여부 판단
+        switch (achive)
+        {
+            case Achive.UnlockPotato:
+                isAchive = GameManager.instance.kill >= 10;
+                break;
+
+            case Achive.UnlockBean:
+                isAchive = GameManager.instance.gameTime == GameManager.instance.maxGameTime;
+                break;
+        }
+
+        //조건을 충족했고 && 플레이어 데이터에서 아직 업적이 깨지지 않은 상태라면
+        if(isAchive && PlayerPrefs.GetInt(achive.ToString()) == 0)
+        {
+            //업적 해금
+            PlayerPrefs.SetInt(achive.ToString(), 1);
+        }
     }
 }
