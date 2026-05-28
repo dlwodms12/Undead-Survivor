@@ -34,6 +34,8 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        //60프레임 설정
+        Application.targetFrameRate = 60;
     }
 
     //Start버튼에서 컨트롤 할 수 있도록 public 으로 선언
