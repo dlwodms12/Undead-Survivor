@@ -18,12 +18,18 @@ public class LevelUp : MonoBehaviour
         Next();
         rect.localScale = Vector3.one;
         GameManager.instance.Stop();
+
+        //오디오 재생 시작
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.LevelUp);
     }
 
     public void Hide()
     {
         rect.localScale = Vector3.zero;
         GameManager.instance.Resume();
+
+        //오디오 재생 시작
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Select);
     }
     //기본 무기 장착을 위한 선택 함수
     public void Select(int index)

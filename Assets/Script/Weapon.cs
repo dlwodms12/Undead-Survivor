@@ -43,12 +43,6 @@ public class Weapon : MonoBehaviour
                 break;
         }
 
-        //Test Code
-        if (Input.GetButtonDown("Jump"))
-        {
-            LevelUp(10, 1);
-        }
-
     }
 
     public void LevelUp(float damage, int count)
@@ -172,5 +166,8 @@ public class Weapon : MonoBehaviour
         bullet.rotation = Quaternion.FromToRotation(Vector3.up, dir);
         //데미지와 관통력, 방향값을 Bullet.cs의 Init 함수에 전달
         bullet.GetComponent<Bullet>().Init(damage, count, dir);
+
+        //오디오 재생 시작
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Range);
     }
 }

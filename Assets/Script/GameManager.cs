@@ -51,6 +51,9 @@ public class GameManager : MonoBehaviour
         uiLevelUp.Select(playerId % 2);
 
         Resume();
+
+        //오디오 재생 시작
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Select);
         
     }
 
@@ -78,6 +81,9 @@ public class GameManager : MonoBehaviour
         uiResult.Lose();
 
         Stop();
+
+        //오디오 재생 시작
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Lose);
     }
 
     public void GameVictory()
@@ -98,6 +104,9 @@ public class GameManager : MonoBehaviour
         uiResult.Win();
 
         Stop();
+
+        //오디오 재생 시작
+        AudioManager.instance.PlaySfx(AudioManager.Sfx.Win);
     }
 
     void Update()
