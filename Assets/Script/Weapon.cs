@@ -14,13 +14,6 @@ public class Weapon : MonoBehaviour
 
     Player player;
 
-    /*
-    void Awake()
-    {
-        player = GameManager.instance.player;
-    }
-    */
-
     // Update is called once per frame
     void Update()
     {
@@ -68,7 +61,6 @@ public class Weapon : MonoBehaviour
         //무기 이름 생성
         name = "Weapon" + data.itemId;
 
-        //수정 후
         transform.parent = player.transform;
 
         transform.localPosition = Vector3.zero;
@@ -130,11 +122,7 @@ public class Weapon : MonoBehaviour
             }
             else
             {
-                //수정 전
                 //모자란 무기는 풀링 호출해서 지역 변수로 받아서 
-                //bullet = GameManager.instance.pool.Get(prefabId).transform;
-
-                //수정 후
                 bullet = PoolManager.instance.Get(prefabId).transform;
 
                 //자식으로 추가
@@ -171,10 +159,6 @@ public class Weapon : MonoBehaviour
         //정규화
         dir = dir.normalized;
 
-        //수정 전
-        //Transform bullet = GameManager.instance.pool.Get(prefabId).transform;
-
-        //수정 후
         //풀링 호출해서 프리팹 추가
         Transform bullet = PoolManager.instance.Get(prefabId).transform;
 
