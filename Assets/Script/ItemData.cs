@@ -31,4 +31,7 @@ public class ItemData : ScriptableObject
     [Header("# Weapon")]
     public GameObject projectile;
     public Sprite hand;
+
+    [Header("# Weapon Base Setting")]
+    public float baseSpeed; //무기별 기본 속도
 }

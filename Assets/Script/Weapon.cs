@@ -10,7 +10,7 @@ public class Weapon : MonoBehaviour
     public int count; //소환할 무기 개수
     public float speed; //무기 회전 속도 or 연사속도
     public float meleeRadius = 1.5f; //근접 무기 회전 반경
-
+    public float baseSpeed; //무기별 기본 속도
     float timer;
 
     Player player;
@@ -71,6 +71,9 @@ public class Weapon : MonoBehaviour
         damage = data.baseDamage * Character.Damage;
         count = data.baseCount + Character.Count;
 
+        //baseSpeed 값 초기화
+        this.baseSpeed = data.baseSpeed;
+
         //풀 길이에 맞춰 돌면서
         for (int index = 0; index < PoolManager.instance.prefabs.Length; index++)
         {
@@ -87,14 +90,14 @@ public class Weapon : MonoBehaviour
         {
             case 0:
                 //근접무기 : 회전속도
-                speed = 150*Character.WeaponSpeed;
+                speed = baseSpeed*Character.WeaponSpeed;
                 Batch();
 
                 break;
 
             default:
                 //원거리 무기 : 연사속도
-                speed = 0.4f * Character.WeaponRate;
+                speed = baseSpeed * Character.WeaponRate;
                 break;
         }
 
