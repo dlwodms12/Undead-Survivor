@@ -7,6 +7,12 @@ public class Bullet : MonoBehaviour
     public float damage; //총알 데미지
     public int per; //관통력
 
+    //총알 속력
+    public float speed = 15f;
+
+    //근접 무기를 판별하는 관통력 -100을 상수로 선언
+    public const int MeleePenetration = -100;
+
     Rigidbody2D rigid;
 
     private void Awake()
@@ -24,14 +30,14 @@ public class Bullet : MonoBehaviour
         if(per >= 0)
         {
             //총알에 벡터값 부여(방향+속도)
-            rigid.velocity = dir*15f;
+            rigid.velocity = dir*speed;
         }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         //Enemy 태그가 아니거나 근접무기인 경우 아래 코드 실행X
-        if (!collision.CompareTag("Enemy") || per == -100)
+        if (!collision.CompareTag("Enemy") || per == MeleePenetration)
         {
             return;
         }

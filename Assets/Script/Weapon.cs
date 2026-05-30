@@ -9,6 +9,7 @@ public class Weapon : MonoBehaviour
     public float damage;  //무기 데미지
     public int count; //소환할 무기 개수
     public float speed; //무기 회전 속도 or 연사속도
+    public float meleeRadius = 1.5f; //근접 무기 회전 반경
 
     float timer;
 
@@ -138,9 +139,11 @@ public class Weapon : MonoBehaviour
             //무기 회전
             bullet.Rotate(rotVec);
             //무기를 월드 좌표 기준으로 이동(위로)
-            bullet.Translate(bullet.up * 1.5f, Space.World);
+            bullet.Translate(bullet.up * meleeRadius, Space.World);
             //무기 초기화
-            bullet.GetComponent<Bullet>().Init(damage,-100, Vector3.zero);  //근접무기이므로 관통력을 -100으로 처리
+            //근접무기이므로 관통력을 -100으로 처리
+            bullet.GetComponent<Bullet>().Init(damage,
+                Bullet.MeleePenetration, Vector3.zero);  
         }
     }
 
