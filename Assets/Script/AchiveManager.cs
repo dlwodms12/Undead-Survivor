@@ -14,18 +14,12 @@ public class AchiveManager : MonoBehaviour
     //업적 종류
     enum Achive { UnlockPotato, UnlockBean }
 
-    //업적 데이터를 저장
-    Achive[] achives;
-
     //업적 알림에 쓰이는 코루틴 변수
     WaitForSecondsRealtime wait;
 
     //초기화
     private void Awake()
     {
-        //Enum.GetValues : 열거형의 모든 데이터를 가져오는 함수
-        achives = (Achive[])Enum.GetValues(typeof(Achive));
-
         //코루틴 변수 초기화
         wait = new WaitForSecondsRealtime(5);
 
@@ -40,8 +34,8 @@ public class AchiveManager : MonoBehaviour
     void Init()
     {
         PlayerPrefs.SetInt("MyData", 1);
-
-        foreach (Achive achive in achives)
+        //Enum.GetValues : 열거형의 모든 데이터를 가져오는 함수
+        foreach (Achive achive in (Achive[])Enum.GetValues(typeof(Achive)))
         {
             PlayerPrefs.SetInt(achive.ToString(), 0);
         }
@@ -50,6 +44,49 @@ public class AchiveManager : MonoBehaviour
     void Start()
     {
         UnlockCharacter();
+        //GameManager 이벤트 구독
+        GameManager.OnKillCountingChanged += CheckKillAchive;
+        GameManager.OnGameVictory += CheckStatusAchive; // 시간 만료 승리 시 실행
+    }
+
+    private void OnDestroy()
+    {
+        //이벤트 구독 해제
+        GameManager.OnKillCountingChanged -= CheckKillAchive;
+        GameManager.OnGameVictory -= CheckStatusAchive;
+    }
+
+    //몬스터가 죽을 때만 실행
+    void CheckKillAchive(int currentKill)
+    {
+        if (currentKill >= 10 && PlayerPrefs.GetInt(Achive.UnlockPotato.ToString()) == 0)
+        {
+            UnlockAchive(Achive.UnlockPotato);
+        }
+    }
+
+    //게임에서 승리했을 때만 실행
+    void CheckStatusAchive()
+    {
+        if (PlayerPrefs.GetInt(Achive.UnlockBean.ToString()) == 0)
+        {
+            UnlockAchive(Achive.UnlockBean);
+        }
+    }
+
+    //업적 검사 후 UI 출력
+    void UnlockAchive(Achive achive)
+    {
+        PlayerPrefs.SetInt(achive.ToString(), 1);
+
+        // 알림 UI 순번에 맞게 켜주기
+        for (int index = 0; index < uiNotice.transform.childCount; index++)
+        {
+            bool isActive = index == (int)achive;
+            uiNotice.transform.GetChild(index).gameObject.SetActive(isActive);
+        }
+
+        StartCoroutine(NoticeRoutine());
     }
 
     //캐릭터 잠금해제
@@ -59,62 +96,13 @@ public class AchiveManager : MonoBehaviour
         for (int index = 0; index < lockCharacter.Length; index++)
         {
             //업적 이름 받아오기
-            string achiveName = achives[index].ToString();
+            string achiveName = ((Achive)index).ToString();
             //플레이어 데이터에서 해당 업적이 1(해금됐는지) 확인하는 변수
             bool isUnlock = PlayerPrefs.GetInt(achiveName) == 1;
-            //잠겨진 캐릭터의 업적이 해금됐다면 잠겨진 캐릭터 활성화
+            //잠겨진 캐릭터 목록에서 비활성화(캐릭터 해금)
             lockCharacter[index].SetActive(!isUnlock);
-            //업적이 잠겨있다면 해제된 캐릭터를 다시 잠금
+            //해금된 캐릭터 목록에서 활성화(캐릭터 해금)
             unlockCharacter[index].SetActive(isUnlock);
-        }
-    }
-
-    // Update is called once per frame
-    void LateUpdate()
-    {
-        foreach(Achive achive in achives)
-        {
-            CheckAchive(achive);
-        }
-    }
-
-    void CheckAchive(Achive achive)
-    {
-        bool isAchive = false;
-
-        //각 조건에 따른 업적 해금 여부 판단
-        switch (achive)
-        {
-            case Achive.UnlockPotato:
-                if (GameManager.instance.isLive)
-                {
-                    isAchive = GameManager.instance.kill >= 10;
-                }
-                break;
-
-            case Achive.UnlockBean:
-                //gameTime과 maxGameTime이 float 형이기 때문에 >= 으로 안전하게 비교
-                isAchive = GameManager.instance.gameTime >= GameManager.instance.maxGameTime;
-                break;
-        }
-
-        //조건을 충족했고 && 플레이어 데이터에서 아직 업적이 깨지지 않은 상태라면
-        if(isAchive && PlayerPrefs.GetInt(achive.ToString()) == 0)
-        {
-            //업적 해금
-            PlayerPrefs.SetInt(achive.ToString(), 1);
-            
-            //uiNotice 자식들(UnlockPotato, UnlockBean)을 돌면서
-            for(int index = 0; index < uiNotice.transform.childCount; index++)
-            {
-                //각 업적이 해금됐는지 확인한다음
-                bool isActive = index == (int)achive;
-                //해당 순번의 캐릭터가 해금됐다면 ui 알림 활성화
-                uiNotice.transform.GetChild(index).gameObject.SetActive(isActive);
-            }
-
-            //해금 알림
-            StartCoroutine(NoticeRoutine());
         }
     }
 

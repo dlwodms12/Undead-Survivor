@@ -121,7 +121,8 @@ public class Enemy : MonoBehaviour
             anim.SetBool("Dead", true);
 
             //게임 데이터
-            GameManager.instance.kill++;
+            GameManager.instance.AddKill();
+
             GameManager.instance.GetExp();
             //오디오 재생 시작
             if (GameManager.instance.isLive)

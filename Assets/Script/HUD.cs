@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 using UnityEngine;
 using UnityEngine.UI;
 using static Cinemachine.DocumentationSortingAttribute;
@@ -26,6 +27,30 @@ public class HUD : MonoBehaviour
         mySlider = GetComponent<Slider>();
     }
 
+    private void Start()
+    {
+        //킬 수를 표시하는 UI라면 GameManager의 이벤트를 구독
+        if(type == InfoType.Kill)
+        {
+            GameManager.OnKillCountingChanged += UpdateKillUI;
+            UpdateKillUI(GameManager.instance.kill);
+        }
+    }
+
+    private void OnDestroy()
+    {
+        //오브젝트가 파괴될 때 구독을 해제
+        if(type == InfoType.Kill)
+        {
+            GameManager.OnKillCountingChanged -= UpdateKillUI;
+        }
+    }
+
+    void UpdateKillUI(int currentKill)
+    {
+        myText.text = string.Format("{0:F0}", currentKill);
+    }
+
     private void LateUpdate()
     {
         switch (type)
@@ -40,9 +65,6 @@ public class HUD : MonoBehaviour
                 //UI에 레벨 반영
                 //Format("{반영할 데이터 인덱스 : 소숫점 버림(F0)}", 반영할 데이터)
                 myText.text = string.Format("Lv.{0:F0}", GameManager.instance.level);
-                break;
-            case InfoType.Kill:
-                myText.text = string.Format("{0:F0}", GameManager.instance.kill);
                 break;
             case InfoType.Time:
                 //남은 시간

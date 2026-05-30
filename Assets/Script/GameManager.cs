@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,9 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
+    //킬 수가 변경되었을 때 외부로 쓸 이벤트
+    public static event Action<int> OnKillCountingChanged;
+    public static event Action OnGameVictory;
 
     [Header("# Game Control")]
     public float gameTime;
@@ -106,6 +110,9 @@ public class GameManager : MonoBehaviour
 
         enemyCleaner.SetActive(true);
 
+        //게임 승리 이벤트 발생
+        OnGameVictory?.Invoke();
+
         yield return new WaitForSeconds(0.5f);
 
         uiResult.gameObject.SetActive(true);
@@ -162,5 +169,13 @@ public class GameManager : MonoBehaviour
         isLive = true;
         Time.timeScale = 1;
         uiJoy.localScale = Vector3.one;
+    }
+
+    //킬 이벤트
+    public void AddKill()
+    {
+        kill++;
+        //이벤트 발생
+        OnKillCountingChanged?.Invoke(kill);
     }
 }
