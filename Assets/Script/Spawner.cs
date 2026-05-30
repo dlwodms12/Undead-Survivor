@@ -42,7 +42,12 @@ public class Spawner : MonoBehaviour
 
     void Spawn()
     {
-        GameObject enemy = GameManager.instance.pool.Get(0);
+        //수정 전
+        //GameObject enemy = GameManager.instance.pool.Get(0);
+
+        //수정 후
+        GameObject enemy = PoolManager.instance.Get(0);
+
         //랜덤한 스폰 포인트에 적 오브젝트 생성 (본인(Spawner)를 제외하고 자식 오브젝트(Point)에 생성)
         enemy.transform.position = spawnPoint[Random.Range(1,spawnPoint.Length)].position;
         //레벨에 따라 다른 Enemy spawnData[]를 가져와 적용시킴

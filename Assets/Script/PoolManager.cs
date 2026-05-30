@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class PoolManager : MonoBehaviour
 {
+    //싱글톤 인스턴스
+    public static PoolManager instance;
+    
     //프리팹을 보관할 배열
     public GameObject[] prefabs;
 
@@ -12,6 +15,9 @@ public class PoolManager : MonoBehaviour
 
     private void Awake()
     {
+        //싱글톤 초기화
+        instance = this;
+        
         //프리팹 종류 수만큼의 길이를 가지는 리스트를 생성
         pools = new List<GameObject>[prefabs.Length];
 

@@ -24,7 +24,7 @@ public class GameManager : MonoBehaviour
     public int[] nextExp = { 3, 5, 10, 100, 150, 210, 280, 360, 450, 600 };
 
     [Header("# Game Object")]
-    public PoolManager pool;
+    //public PoolManager pool;
     public Player player;
     public LevelUp uiLevelUp;
     public Result uiResult; //게임 결과창 컨트롤

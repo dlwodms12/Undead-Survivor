@@ -70,6 +70,7 @@ public class Weapon : MonoBehaviour
         damage = data.baseDamage * Character.Damage;
         count = data.baseCount + Character.Count;
 
+        /*수정 전
         //풀 길이에 맞춰 돌면서
         for(int index = 0; index < GameManager.instance.pool.prefabs.Length; index++)
         {
@@ -79,6 +80,19 @@ public class Weapon : MonoBehaviour
                 //프리팹 아이디를 저장
                 prefabId = index;
                 break;  
+            }
+        }
+        */
+
+        //풀 길이에 맞춰 돌면서
+        for (int index = 0; index < PoolManager.instance.prefabs.Length; index++)
+        {
+            //무기 오브젝트를 풀에서 찾았다면
+            if (data.projectile == PoolManager.instance.prefabs[index])
+            {
+                //프리팹 아이디를 저장
+                prefabId = index;
+                break;
             }
         }
 
@@ -122,8 +136,13 @@ public class Weapon : MonoBehaviour
             }
             else
             {
+                //수정 전
                 //모자란 무기는 풀링 호출해서 지역 변수로 받아서 
-                bullet = GameManager.instance.pool.Get(prefabId).transform;
+                //bullet = GameManager.instance.pool.Get(prefabId).transform;
+
+                //수정 후
+                bullet = PoolManager.instance.Get(prefabId).transform;
+
                 //자식으로 추가
                 bullet.parent = transform;
             }
@@ -158,8 +177,13 @@ public class Weapon : MonoBehaviour
         //정규화
         dir = dir.normalized;
 
+        //수정 전
+        //Transform bullet = GameManager.instance.pool.Get(prefabId).transform;
+
+        //수정 후
         //풀링 호출해서 프리팹 추가
-        Transform bullet = GameManager.instance.pool.Get(prefabId).transform;
+        Transform bullet = PoolManager.instance.Get(prefabId).transform;
+
         //총알 소환
         bullet.position = transform.position;
         //총알 회전(기준 축, 회전 방향)
