@@ -70,7 +70,12 @@ public class Item : MonoBehaviour
                     //타입에 맞는 무기로 초기화
                     GameObject newWeapon = new GameObject();
                     weapon = newWeapon.AddComponent<Weapon>();
-                    weapon.Init(data);
+
+                    //플레이어 원본 주소를 가져오기
+                    Player player = GameManager.instance.player;
+
+                    //Init 함수 호출할 때 플레이어 정보도 같이 주입
+                    weapon.Init(data, player);
                 }
                 else
                 {

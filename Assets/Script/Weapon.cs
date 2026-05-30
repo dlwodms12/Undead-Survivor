@@ -14,10 +14,12 @@ public class Weapon : MonoBehaviour
 
     Player player;
 
+    /*
     void Awake()
     {
         player = GameManager.instance.player;
     }
+    */
 
     // Update is called once per frame
     void Update()
@@ -58,31 +60,23 @@ public class Weapon : MonoBehaviour
         player.BroadcastMessage("ApplyGear", SendMessageOptions.DontRequireReceiver);
     }
 
-    public void Init(ItemData data)
+    public void Init(ItemData data, Player owner)
     {
-        //무기를 부모(Player)에 붙임
+        //weapon을 소유한 이가 누구인지 배정받아 저장(의존성 주입)
+        this.player = owner;
+
+        //무기 이름 생성
         name = "Weapon" + data.itemId;
+
+        //수정 후
         transform.parent = player.transform;
+
         transform.localPosition = Vector3.zero;
 
         //Property Set
         id = data.itemId;
         damage = data.baseDamage * Character.Damage;
         count = data.baseCount + Character.Count;
-
-        /*수정 전
-        //풀 길이에 맞춰 돌면서
-        for(int index = 0; index < GameManager.instance.pool.prefabs.Length; index++)
-        {
-            //무기 오브젝트를 풀에서 찾았다면
-            if(data.projectile == GameManager.instance.pool.prefabs[index])
-            {
-                //프리팹 아이디를 저장
-                prefabId = index;
-                break;  
-            }
-        }
-        */
 
         //풀 길이에 맞춰 돌면서
         for (int index = 0; index < PoolManager.instance.prefabs.Length; index++)
