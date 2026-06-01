@@ -61,7 +61,7 @@ public class RangedEnemy : Enemy
                 Vector2 nextVec = dirVec.normalized * speed * Time.fixedDeltaTime;
                 rigid.MovePosition(rigid.position + nextVec);
 
-                // 애니메이션 제어 (걷기 켜기)
+                // 애니메이션 제어
                 anim.SetBool("Run", true);
                 break;
 
@@ -69,10 +69,10 @@ public class RangedEnemy : Enemy
                 // [발사 상태] 즉시 이동을 멈추고 고정 위치 유지
                 rigid.velocity = Vector2.zero;
 
-                // 애니메이션 제어 (걷기 끄기)
+                // 애니메이션 제어
                 anim.SetBool("Run", false);
 
-                // 제자리에서 죽거나 플레이어가 죽을 때까지 타이머 기반 무한 발사
+                // 본인이 죽거나 플레이어가 죽을 때까지 발사
                 attackTimer += Time.fixedDeltaTime;
                 if (attackTimer >= attackCooldown)
                 {
@@ -82,7 +82,7 @@ public class RangedEnemy : Enemy
                 break;
         }
 
-        // 방향 전환 (어떤 상태든 항상 플레이어 쪽을 바라봄)
+        // 방향 전환
         spriter.flipX = target.position.x < rigid.position.x;
     }
 
@@ -97,20 +97,21 @@ public class RangedEnemy : Enemy
         EnemyBullet bullet = projectile.GetComponent<EnemyBullet>();
         if (bullet != null)
         {
-            // 데미지는 하드코딩하지 않고 데이터화하거나 임의 지정 (예: 5)
+            // 총알 세팅
             bullet.Init(damage, fireDirection);
         }
     }
 
+    //Spawner에서 호출해서 사용
     public void InitRanged(RangedSpawnData data)
     {
-        // 1. 부모(Enemy)로부터 물려받은 기본 능력치 세팅
+        // 부모(Enemy)로부터 물려받은 기본 능력치 세팅
         maxHealth = data.health;
         health = data.health;
         speed = data.speed;
 
-        // 2. RangedEnemy 고유의 원거리 전투 밸런스 변수 세팅
-        damage = data.bulletDamage;     // 이 대미지가 나중에 총알(EnemyBullet)로 전달됩니다.
+        // RangedEnemy 밸런스 변수 세팅
+        damage = data.bulletDamage;     // 총알 대미지
         attackRange = data.attackRange; // 사거리
         attackCooldown = data.attackCooldown; // 공격 속도
 
