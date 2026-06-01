@@ -34,7 +34,8 @@ public class Spawner : MonoBehaviour
 
         timer += Time.deltaTime;
         //시간에 흐름에 따라 레벨이 올라감
-        level = Mathf.Min(Mathf.FloorToInt(GameManager.instance.gameTime / levelTime), spawnData.Length - 1);
+        level = Mathf.Min(Mathf.FloorToInt(GameManager.instance.gameTime / levelTime),
+            spawnData.Length - 1);
 
         //레벨에 따른 스폰 타임 변경
         if (timer > spawnData[level].spawnTime)
@@ -87,10 +88,10 @@ public class Spawner : MonoBehaviour
 
         rangedTimer += Time.deltaTime;
 
-        // 인스펙터에 적어둔 스폰 주기를 사용합니다!
+        // 스폰 주기에 맞춰 스폰
         if (rangedTimer >= currentData.spawnInterval)
         {
-            SpawnRanged(currentData); // 데이터를 소환 함수로 토스!
+            SpawnRanged(currentData);
             rangedTimer = 0f;
         }
 
