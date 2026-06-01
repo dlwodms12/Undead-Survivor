@@ -7753,6 +7753,8 @@ MonoBehaviour:
   - {fileID: 1070588522685775047, guid: e01317165235bb5439d9f498d720688e, type: 3}
   - {fileID: 8681776077573793631, guid: 63b9e46aed52d5d49947e5650be85a2b, type: 3}
   - {fileID: 7879905669806922119, guid: 4a647349f2b43514e8aeb7450f4d799d, type: 3}
+  - {fileID: 7653425676605770703, guid: 00ac45925956d4c438ef29ceb56bdc0d, type: 3}
+  - {fileID: 1070588522685775047, guid: 5ed4653c89ab8bf468b3bdc758c01731, type: 3}
 --- !u!4 &799662414
 Transform:
   m_ObjectHideFlags: 0
@@ -8953,6 +8955,7 @@ MonoBehaviour:
     health: 15
     speed: 2.4
   levelTime: 0
+  rangedPrefabId: 4
 --- !u!1 &1119263882
 GameObject:
   m_ObjectHideFlags: 0
@@ -15620,6 +15623,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 10000000
   per: -100
+  speed: 15
 --- !u!61 &1679639441
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -25617,7 +25621,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 11.555555
+  orthographic size: 8.666667
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -25778,7 +25782,7 @@ GameObject:
   - component: {fileID: 1955679104}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -26045,7 +26049,6 @@ MonoBehaviour:
   kill: 0
   exp: 0
   nextExp: 03000000050000000a0000006400000096000000d20000001801000068010000c201000058020000
-  pool: {fileID: 799662413}
   player: {fileID: 1955679101}
   uiLevelUp: {fileID: 2115134209}
   uiResult: {fileID: 1126085555}

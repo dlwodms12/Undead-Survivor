@@ -67,20 +67,31 @@ public class Player : MonoBehaviour
     {
         if(!GameManager.instance.isLive) { return; }
 
-        GameManager.instance.health -= Time.deltaTime * 10;
+        //피격 함수 호출
+        TakeDamage(Time.deltaTime * 10);
+    }
 
-        if(GameManager.instance.health < 0)
+    public void TakeDamage(float damage)
+    {
+        if (!GameManager.instance.isLive) { return; }
+
+        // 체력 차감
+        GameManager.instance.health -= damage;
+
+        // 사망 조건 체크
+        if (GameManager.instance.health <= 0)
         {
-            //player의 자식인 Shadow와 Area는 건너뛰고 선택하기 위해 index = 2 부터 시작
-            for(int index = 2; index < transform.childCount; index++)
+            // 체력이 마이너스로 내려가지 않게 0으로 고정
+            GameManager.instance.health = 0;
+
+            // 자식들(무기 등) 비활성화
+            for (int index = 2; index < transform.childCount; index++)
             {
-                //자식들 비활성화
                 transform.GetChild(index).gameObject.SetActive(false);
             }
 
-            //Dead 애니메이션 재생
+            // Dead 애니메이션 재생 및 게임오버 호출
             anim.SetTrigger("Dead");
-            //게임 오버 호출
             GameManager.instance.GameOver();
         }
     }

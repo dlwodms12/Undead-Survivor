@@ -12,12 +12,12 @@ public class Enemy : MonoBehaviour
     public RuntimeAnimatorController[] animCon;
     public Rigidbody2D target;
 
-    bool isLive;
+    protected bool isLive;
 
-    Rigidbody2D rigid;
+    protected Rigidbody2D rigid;
     Collider2D coll;
-    SpriteRenderer spriter;
-    Animator anim;
+    protected SpriteRenderer spriter;
+    protected Animator anim;
     WaitForFixedUpdate wait; //코루틴용
 
     // Start is called before the first frame update
@@ -30,7 +30,7 @@ public class Enemy : MonoBehaviour
         wait = new WaitForFixedUpdate();
     }
 
-    void FixedUpdate()
+    protected virtual void FixedUpdate()
     {
         //게임이 정지한 상태라면 업데이트 중단
         if (!GameManager.instance.isLive) { return; }
@@ -82,9 +82,12 @@ public class Enemy : MonoBehaviour
 
     //레벨링에 따른 Enemy의 변화를 SpawnData를 이용해 반영
     //Spawner.cs에서 호출
-    public void Init(SpawnData data)
+    public virtual void Init(SpawnData data)
     {
-        anim.runtimeAnimatorController = animCon[data.spriteType];
+        if (animCon != null && animCon.Length > data.spriteType)
+        {
+            anim.runtimeAnimatorController = animCon[data.spriteType];
+        }
         speed = data.speed;
         maxHealth = data.health;
         health = data.health;
