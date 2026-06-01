@@ -8956,6 +8956,21 @@ MonoBehaviour:
     speed: 2.4
   levelTime: 0
   rangedPrefabId: 4
+  rangedSpawnData:
+  - appearanceTime: 60
+    spawnInterval: 5
+    health: 5
+    speed: 1
+    bulletDamage: 3
+    attackRange: 6
+    attackCooldown: 3
+  - appearanceTime: 180
+    spawnInterval: 3
+    health: 10
+    speed: 2
+    bulletDamage: 5
+    attackRange: 8
+    attackCooldown: 2
 --- !u!1 &1119263882
 GameObject:
   m_ObjectHideFlags: 0
@@ -25621,7 +25636,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 8.666667
+  orthographic size: 11.555555
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2

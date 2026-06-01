@@ -16,6 +16,7 @@ public class RangedEnemy : Enemy
     public float attackCooldown = 1.2f;        // 총알 발사 주기
     public int projectilePrefabId;             // PoolManager에서 가져올 몬스터 총알 ID
 
+    private float damage; //총알 대미지
     private float attackTimer; //총알 발사 후 얼마나 시간이 지났는지 저장
 
     // 부모의 Init을 오버라이드하여 상태를 초기화
@@ -97,7 +98,24 @@ public class RangedEnemy : Enemy
         if (bullet != null)
         {
             // 데미지는 하드코딩하지 않고 데이터화하거나 임의 지정 (예: 5)
-            bullet.Init(5f, fireDirection);
+            bullet.Init(damage, fireDirection);
         }
+    }
+
+    public void InitRanged(RangedSpawnData data)
+    {
+        // 1. 부모(Enemy)로부터 물려받은 기본 능력치 세팅
+        maxHealth = data.health;
+        health = data.health;
+        speed = data.speed;
+
+        // 2. RangedEnemy 고유의 원거리 전투 밸런스 변수 세팅
+        damage = data.bulletDamage;     // 이 대미지가 나중에 총알(EnemyBullet)로 전달됩니다.
+        attackRange = data.attackRange; // 사거리
+        attackCooldown = data.attackCooldown; // 공격 속도
+
+        // 상태 초기화
+        currentState = State.Pursue;
+        attackTimer = 0f;
     }
 }
