@@ -47,6 +47,7 @@ public class Item : MonoBehaviour
             //장갑과 신발의 경우 연사/이동 속도 증가 수치를 알려줘야 함
             case ItemData.ItemType.Glove:
             case ItemData.ItemType.Shoe:
+            case ItemData.ItemType.Magnet:
                 textDesc.text = string.Format(data.itemDesc, data.damages[level] * 100);
                 break;
             //음료의 경우 아이템 설명만 있으면 됨
@@ -96,7 +97,8 @@ public class Item : MonoBehaviour
 
             case ItemData.ItemType.Glove:
             case ItemData.ItemType.Shoe:
-                if(level == 0)
+            case ItemData.ItemType.Magnet:
+                if (level == 0)
                 {
                     GameObject newGear = new GameObject();
                     gear = newGear.AddComponent<Gear>();
