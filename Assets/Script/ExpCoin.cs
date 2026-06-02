@@ -67,8 +67,6 @@ public class ExpCoin : MonoBehaviour
         {
             FindPlayerReference();
         }
-        // 다시 찾았는데도 못찾았다면 에러방지를 위해 스킵
-        if (playerTransform == null) return;
 
         // 자석 흡입 체크 (아직 흡입이 시작되지 않았을 때만 거리 측정)
         if (!isAttracted && playerTransform != null)
