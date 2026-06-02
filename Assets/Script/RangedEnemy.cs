@@ -69,9 +69,6 @@ public class RangedEnemy : Enemy
                 // [발사 상태] 즉시 이동을 멈추고 고정 위치 유지
                 rigid.velocity = Vector2.zero;
 
-                // 애니메이션 제어
-                anim.SetBool("Run", false);
-
                 // 본인이 죽거나 플레이어가 죽을 때까지 발사
                 attackTimer += Time.fixedDeltaTime;
                 if (attackTimer >= attackCooldown)
