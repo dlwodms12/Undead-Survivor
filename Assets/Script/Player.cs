@@ -12,7 +12,7 @@ public class Player : MonoBehaviour
     public Scanner scanner;
     public Hand[] hands;
     public RuntimeAnimatorController[] animcon;
-
+    public float magnetRadius = 1.5f; // 기본 자석 습득 반경 (인스펙터 조정 가능)
 
     Rigidbody2D rigid;
     SpriteRenderer spriter;

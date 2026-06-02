@@ -13,6 +13,8 @@ public class Enemy : MonoBehaviour
     public Rigidbody2D target;
 
     protected bool isLive;
+    public int expCoinPrefabId;    // PoolManager에 등록된 해당 코인 프리팹의 Index 번호
+    protected int spriteType;      // 몬스터 고유 티어 번호
 
     protected Rigidbody2D rigid;
     Collider2D coll;
@@ -91,6 +93,8 @@ public class Enemy : MonoBehaviour
         speed = data.speed;
         maxHealth = data.health;
         health = data.health;
+
+        this.spriteType = data.spriteType; //몬스터의 티어를 저장
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -126,7 +130,9 @@ public class Enemy : MonoBehaviour
             //게임 데이터
             GameManager.instance.AddKill();
 
-            GameManager.instance.GetExp();
+            //코인 드랍
+            DropExpCoin();
+
             //오디오 재생 시작
             if (GameManager.instance.isLive)
             {
@@ -149,6 +155,21 @@ public class Enemy : MonoBehaviour
     void Dead()
     {
         gameObject.SetActive(false);
+    }
+
+    //코인 드랍
+    protected virtual void DropExpCoin()
+    {
+        // 풀매니저에서 근거리용 코인 인스턴스 팝업
+        GameObject coinObj = PoolManager.instance.Get(expCoinPrefabId);
+        coinObj.transform.position = transform.position;
+
+        ExpCoin coin = coinObj.GetComponent<ExpCoin>();
+        if (coin != null)
+        {
+            // 몬스터 티어를 전달해 크기와 경험치 연산 진행
+            coin.InitMelee(spriteType);
+        }
     }
 
 }

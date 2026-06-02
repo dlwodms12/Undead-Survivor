@@ -7755,6 +7755,8 @@ MonoBehaviour:
   - {fileID: 7879905669806922119, guid: 4a647349f2b43514e8aeb7450f4d799d, type: 3}
   - {fileID: 7653425676605770703, guid: 00ac45925956d4c438ef29ceb56bdc0d, type: 3}
   - {fileID: 1070588522685775047, guid: 5ed4653c89ab8bf468b3bdc758c01731, type: 3}
+  - {fileID: 6809843457059746871, guid: a195b585cc2dc1c4cbb5e498f0d2611d, type: 3}
+  - {fileID: 4100713914092342270, guid: 7558257c4555f0d4f8f7c9dc8ee1e322, type: 3}
 --- !u!4 &799662414
 Transform:
   m_ObjectHideFlags: 0
@@ -25636,7 +25638,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 11.555555
+  orthographic size: 17.333334
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -25957,6 +25959,7 @@ MonoBehaviour:
   - {fileID: 22100000, guid: ecb9efb20ab3ce84e96e847cab08cd90, type: 2}
   - {fileID: 22100000, guid: 5b3a32049f182344f823889069b5445e, type: 2}
   - {fileID: 22100000, guid: 1ba2ef2e85f88bc428ec6eea7a3b9df9, type: 2}
+  magnetRadius: 1.5
 --- !u!95 &1955679102
 Animator:
   serializedVersion: 5

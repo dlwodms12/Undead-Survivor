@@ -202,6 +202,7 @@ MonoBehaviour:
   maxHealth: 0
   animCon: []
   target: {fileID: 0}
+  expCoinPrefabId: 6
   currentState: 0
   attackRange: 6
   attackCooldown: 1.2

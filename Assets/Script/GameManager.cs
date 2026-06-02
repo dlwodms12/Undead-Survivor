@@ -139,18 +139,20 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void GetExp()
+    public void GetExp(int amount)
     {
         //게임이 정지한 상태라면 업데이트 중단
         if (!isLive) { return; }
 
-        exp++;
+        //코인이 주는 고유 경험치(amount)를 추가
+        exp += amount;
 
         //최대레벨(10)을 초과할 경우 nextExp[9]를 유지
-        if(exp >= nextExp[Mathf.Min(level, nextExp.Length-1)])
+        //대량으로 코인을 습득해 연속으로 레벨업 하는 상황을 대비해 while로 검사
+        while (exp >= nextExp[Mathf.Min(level, nextExp.Length - 1)])
         {
+            exp -= nextExp[Mathf.Min(level, nextExp.Length - 1)];
             level++;
-            exp = 0;
             uiLevelUp.Show();
         }
     }

@@ -119,4 +119,19 @@ public class RangedEnemy : Enemy
         currentState = State.Pursue;
         attackTimer = 0f;
     }
+
+    //원거리 몬스터용 코인 드랍 함수
+    protected override void DropExpCoin()
+    {
+        // 풀매니저에서 원거리용 코인 인스턴스 팝업
+        GameObject coinObj = PoolManager.instance.Get(expCoinPrefabId);
+        coinObj.transform.position = transform.position;
+
+        ExpCoin coin = coinObj.GetComponent<ExpCoin>();
+        if (coin != null)
+        {
+            // 원거리 전용 데이터 초기화 호출
+            coin.InitRanged();
+        }
+    }
 }
