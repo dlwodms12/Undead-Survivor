@@ -11,7 +11,8 @@ public class ItemData : ScriptableObject
         Range, //원거리
         Glove, //장갑
         Shoe,  //신발
-        Heal   //치료
+        Heal,  //치료
+        Magnet //자석
     }
 
     [Header("# Main Info")]

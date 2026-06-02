@@ -37,6 +37,9 @@ public class Gear : MonoBehaviour
             case ItemData.ItemType.Shoe:
                 SpeedUp(); 
                 break;
+            case ItemData.ItemType.Magnet: // 새로 추가
+                MagnetUp();
+                break;
         }
     }
 
@@ -70,5 +73,11 @@ public class Gear : MonoBehaviour
     {
         float speed = 3 * Character.Speed;
         GameManager.instance.player.speed = speed + speed * rate;
+    }
+
+    void MagnetUp()
+    {
+        // 캐릭터의 자석 반경을 가져와서 레벨별 증가 수치만큼 추가
+        GameManager.instance.player.magnetRadius = 1.5f + rate;
     }
 }

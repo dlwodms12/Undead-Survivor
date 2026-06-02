@@ -18,7 +18,7 @@ public class Item : MonoBehaviour
     private void Awake()
     {
         //배열의 두번째 컴포넌트를 가져오기(첫번째는 자기 자신)
-        //Item 스크립트는 자식으로 TextLevel과 Icon을 가지고 있음
+        //Item 오브젝트는 자식으로 TextLevel과 Icon을 가지고 있음
         icon = GetComponentsInChildren<Image>()[1];
         //호출된 아이템에 맞는 아이콘 가져오기(ItemData)
         icon.sprite = data.itemIcon;
