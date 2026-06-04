@@ -76,7 +76,6 @@ public class ExpCoin : MonoBehaviour
             // 추후 자석 아이템으로 playerScript.magnetRadius가 커지면 자동으로 감지 범위가 넓어짐
             if (distance <= playerScript.magnetRadius)
             {
-                Debug.Log("코루틴 실행");
                 StartCoroutine(BounceAndSuckRoutine());
             }
         }
