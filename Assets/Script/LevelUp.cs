@@ -48,24 +48,33 @@ public class LevelUp : MonoBehaviour
             item.gameObject.SetActive(false);
         }
 
-        // 그 중에서 랜덤하게 3개 아이템 활성화
-        int[] ran = new int[3];
-
-        while (true)
+        //모든 아이템의 인덱스를 담을 임시 리스트 생성
+        List<int> shuffleList = new List<int>();
+        for (int i = 0; i < items.Length; i++)
         {
-            //3개의 변수에 랜덤 숫자 저장
-            ran[0] = Random.Range(0, items.Length);
-            ran[1] = Random.Range(0, items.Length);
-            ran[2] = Random.Range(0, items.Length);
-
-            //3개의 숫자가 중복되지 않는다면
-            if (ran[0] != ran[1] && ran[1] != ran[2] && ran[0] != ran[2])
-            {
-                break;
-            }
+            shuffleList.Add(i);
         }
 
-        for(int index = 0;  index < ran.Length; index++)
+        //리스트 섞기
+        for (int i = shuffleList.Count - 1; i > 0; i--)
+        {
+            // 0부터 i까지의 범위 중 랜덤 인덱스 선택
+            int randomIndex = Random.Range(0, i + 1);
+
+            // 두 요소의 위치를 Swap
+            int temp = shuffleList[i];
+            shuffleList[i] = shuffleList[randomIndex];
+            shuffleList[randomIndex] = temp;
+        }
+
+        // 리스트의 맨 앞 3개를 순서대로 가져옴
+        int[] ran = new int[3];
+        for (int i = 0; i < ran.Length; i++)
+        {
+            ran[i] = shuffleList[i];
+        }
+
+        for (int index = 0;  index < ran.Length; index++)
         {
             //뽑힌 랜덤 숫자에 해당하는 아이템 배열 칸을 찾아감
             Item ranItem = items[ran[index]];
