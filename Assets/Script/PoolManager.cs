@@ -6,25 +6,24 @@ public class PoolManager : MonoBehaviour
 {
     //싱글톤 인스턴스
     public static PoolManager instance;
-    
+
     //프리팹을 보관할 배열
+    [Header("# Prefabs to Pool")]
     public GameObject[] prefabs;
 
-    //풀 담당을 하는 리스트
-    List<GameObject>[] pools;
+    //큐를 선언
+    private Queue<GameObject>[] pools;
 
     private void Awake()
     {
-        //싱글톤 초기화
         instance = this;
-        
-        //프리팹 종류 수만큼의 길이를 가지는 리스트를 생성
-        pools = new List<GameObject>[prefabs.Length];
 
-        //풀 리스트 초기화
-        for(int index = 0; index < pools.Length; index++)
+        // 프리팹 종류 수만큼의 길이를 가지는 큐 배열 생성
+        pools = new Queue<GameObject>[prefabs.Length];
+
+        for (int index = 0; index < pools.Length; index++)
         {
-            pools[index] = new List<GameObject>();
+            pools[index] = new Queue<GameObject>();
         }
     }
 
@@ -32,27 +31,35 @@ public class PoolManager : MonoBehaviour
     {
         GameObject select = null;
 
-        //선택한 풀의 게임 오브젝트에 접근
-        foreach(GameObject item in pools[index])
+        // 큐에 대기 중인(비활성화된) 오브젝트가 있다면 루프 없이 즉시 꺼냄
+        if (pools[index].Count > 0)
         {
-            //오브젝트가 대기 중이라면
-            if (!item.activeSelf)
+            select = pools[index].Dequeue();
+            select.SetActive(true);
+        }
+        // 대기 중인 오브젝트가 없다면 새로 생성(Instantiate)
+        else
+        {
+            select = Instantiate(prefabs[index], transform);
+
+            // 새로 만든 오브젝트에 자동으로 Poolable 컴포넌트를 붙여 관리를 자동화
+            Poolable poolable = select.GetComponent<Poolable>();
+            if (poolable == null)
             {
-                //select 변수에 할당
-                select = item;
-                select.SetActive(true);
-                break;
+                poolable = select.AddComponent<Poolable>();
             }
+            poolable.Setup(index); // 본인의 프리팹 인덱스 등록
+
+            select.SetActive(true);
         }
 
-        //대기 중인 오브젝트가 없다면(item이 전부 활성화된 상태라면)
-        if(!select)
-        {
-            //새로 생성해서 select 변수에 할당하고, 생성한 오브젝트는 PoolManager의 자식으로 둠
-            select = Instantiate(prefabs[index], transform);
-            //해당 오브젝트 풀 리스트에 Add 함수로 추가
-            pools[index].Add(select);
-        }
         return select;
     }
+
+    // Poolable 컴포넌트가 OnDisable 될 때 호출할 복귀 전용 함수
+    public void ReturnToPool(int index, GameObject obj)
+    {
+        pools[index].Enqueue(obj);
+    }
+
 }
