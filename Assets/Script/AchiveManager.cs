@@ -20,29 +20,31 @@ public class AchiveManager : MonoBehaviour
     //초기화
     private void Awake()
     {
-        //코루틴 변수 초기화
         wait = new WaitForSecondsRealtime(5);
-
-        //PlayerPrefs에 MyData 값이 0이라면(게임을 처음 실행했다면)
-        if (!PlayerPrefs.HasKey("MyData"))
-        {
-            Init();
-        }
     }
 
     //데이터 초기화
     void Init()
     {
-        PlayerPrefs.SetInt("MyData", 1);
-        //Enum.GetValues : 열거형의 모든 데이터를 가져오는 함수
-        foreach (Achive achive in (Achive[])Enum.GetValues(typeof(Achive)))
+        // 첫 플레이가 끝났음을 데이터에 기록
+        DataManager.instance.gameData.isFirstPlay = false;
+
+        // 초기화 시 모든 업적을 잠금(false) 상태로 세팅
+        for (int i = 0; i < DataManager.instance.gameData.achievementUnlocked.Count; i++)
         {
-            PlayerPrefs.SetInt(achive.ToString(), 0);
+            DataManager.instance.gameData.achievementUnlocked[i] = false;
         }
+
+        DataManager.instance.SaveGame(); // 변경사항 저장
     }
 
     void Start()
     {
+        // DataManager의 데이터를 검사
+        if (DataManager.instance.gameData.isFirstPlay)
+        {
+            Init();
+        }
         UnlockCharacter();
         //GameManager 이벤트 구독
         GameManager.OnKillCountingChanged += CheckKillAchive;
@@ -59,7 +61,10 @@ public class AchiveManager : MonoBehaviour
     //몬스터가 죽을 때만 실행
     void CheckKillAchive(int currentKill)
     {
-        if (currentKill >= 10 && PlayerPrefs.GetInt(Achive.UnlockPotato.ToString()) == 0)
+        // 현재 업적이 false(미해금) 상태이고, 10킬 이상일 때만 실행
+        bool isPotatoUnlocked = DataManager.instance.gameData.achievementUnlocked[(int)Achive.UnlockPotato];
+
+        if (currentKill >= 10 && !isPotatoUnlocked)
         {
             UnlockAchive(Achive.UnlockPotato);
         }
@@ -68,7 +73,10 @@ public class AchiveManager : MonoBehaviour
     //게임에서 승리했을 때만 실행
     void CheckStatusAchive()
     {
-        if (PlayerPrefs.GetInt(Achive.UnlockBean.ToString()) == 0)
+        // 현재 업적이 false(미해금) 상태면 실행
+        bool isBeanUnlocked = DataManager.instance.gameData.achievementUnlocked[(int)Achive.UnlockBean];
+
+        if (!isBeanUnlocked)
         {
             UnlockAchive(Achive.UnlockBean);
         }
@@ -77,7 +85,10 @@ public class AchiveManager : MonoBehaviour
     //업적 검사 후 UI 출력
     void UnlockAchive(Achive achive)
     {
-        PlayerPrefs.SetInt(achive.ToString(), 1);
+        // 해당 업적 인덱스를 true로 변경하고 저장
+        int achiveIndex = (int)achive;
+        DataManager.instance.gameData.achievementUnlocked[achiveIndex] = true;
+        DataManager.instance.SaveGame(); // 디스크에 실시간 반영
 
         // 알림 UI 순번에 맞게 켜주기
         for (int index = 0; index < uiNotice.transform.childCount; index++)
@@ -95,13 +106,12 @@ public class AchiveManager : MonoBehaviour
         //잠겨진 캐릭터들 순회
         for (int index = 0; index < lockCharacter.Length; index++)
         {
-            //업적 이름 받아오기
-            string achiveName = ((Achive)index).ToString();
-            //플레이어 데이터에서 해당 업적이 1(해금됐는지) 확인하는 변수
-            bool isUnlock = PlayerPrefs.GetInt(achiveName) == 1;
-            //잠겨진 캐릭터 목록에서 비활성화(캐릭터 해금)
+            // 리스트에서 해금 여부 참조
+            bool isUnlock = DataManager.instance.gameData.achievementUnlocked[index];
+
+            //잠긴 캐릭터 항목에서 해당 캐릭터를 비활성화(잠금해제 됐으므로)
             lockCharacter[index].SetActive(!isUnlock);
-            //해금된 캐릭터 목록에서 활성화(캐릭터 해금)
+            //잠금 해제된 캐릭터 항목에서 해당 캐릭터를 활성화
             unlockCharacter[index].SetActive(isUnlock);
         }
     }
