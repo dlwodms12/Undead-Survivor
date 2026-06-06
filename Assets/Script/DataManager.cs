@@ -41,7 +41,7 @@ public class DataManager : MonoBehaviour
         File.WriteAllText(saveFilePath, jsonText);
 
         //Debug Code
-        Debug.Log($"[Save 완료] 경로: {saveFilePath}");
+        //Debug.Log($"[Save 완료] 경로: {saveFilePath}");
     }
 
     // JSON 텍스트 파일을 C# 데이터로 로드
@@ -54,7 +54,7 @@ public class DataManager : MonoBehaviour
             gameData = JsonUtility.FromJson<GameData>(jsonText);
 
             //Debug Code
-            Debug.Log("[Load 완료] 기존 데이터를 불러왔습니다.");
+            //Debug.Log("[Load 완료] 기존 데이터를 불러왔습니다.");
         }
         // 저장된 파일이 없다면
         else
