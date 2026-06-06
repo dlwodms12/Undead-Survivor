@@ -1,0 +1,10 @@
+{
+  "meleeSpawnData": [
+    { "spawnTime": 0.7, "spriteType": 0, "health": 10, "speed": 1.5 },
+    { "spawnTime": 0.2, "spriteType": 1, "health": 15, "speed": 2.4 }
+  ],
+  "rangedSpawnData": [
+    { "appearanceTime": 60.0, "spawnInterval": 5.0, "health": 5, "speed": 1.0, "bulletDamage": 3.0, "attackRange": 6.0, "attackCooldown": 3.0},
+    { "appearanceTime": 180.0, "spawnInterval": 3.0, "health": 10, "speed": 2.0, "bulletDamage": 5.0, "attackRange": 8.0, "attackCooldown": 2.0 }
+  ]
+}

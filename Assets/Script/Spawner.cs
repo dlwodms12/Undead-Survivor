@@ -1,6 +1,17 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
+
+//JSON을 받아올 Wrapper 클래스 선언
+[Serializable]
+public class SpawnDataContainer
+{
+    // JSON의 Key 이름("meleeSpawnData", "rangedSpawnData")과 일치해야 함
+    public List<SpawnData> meleeSpawnData;
+    public List<RangedSpawnData> rangedSpawnData;
+}
 
 public class Spawner : MonoBehaviour
 {
@@ -22,8 +33,37 @@ public class Spawner : MonoBehaviour
         //Spawner의 본인 + 자식 컴포넌트(스폰 포인트)를 가져와서 배열에 할당
         spawnPoint = GetComponentsInChildren<Transform>();
 
-        //게임 최대 시간을 몬스터 데이터 크기로 나누어 자동으로 레벨 구간을 계산
-        levelTime = GameManager.instance.maxGameTime / spawnData.Length;
+        // 외부 JSON 파일로부터 데이터 로드 함수 호출
+        LoadSpawnDataFromJson();
+
+        // 몬스터 데이터 크기가 결정된 후 레벨 구간 계산
+        if (spawnData != null && spawnData.Length > 0)
+        {
+            levelTime = GameManager.instance.maxGameTime / spawnData.Length;
+        }
+    }
+
+    void LoadSpawnDataFromJson()
+    {
+        // StreamingAssets 폴더 내의 파일 경로 지정
+        string filePath = Path.Combine(Application.streamingAssetsPath, "SpawnData.json");
+
+        if (File.Exists(filePath))
+        {
+            // 파일의 모든 텍스트 읽기
+            string jsonText = File.ReadAllText(filePath);
+
+            // JsonUtility를 이용해 컨테이너 클래스로 역직렬화
+            SpawnDataContainer dataContainer = JsonUtility.FromJson<SpawnDataContainer>(jsonText);
+
+            // 리스트 데이터를 기존 스크립트에서 사용하던 배열 구조로 변환하여 할당
+            spawnData = dataContainer.meleeSpawnData.ToArray();
+            rangedSpawnData = dataContainer.rangedSpawnData.ToArray();
+        }
+        else
+        {
+            Debug.LogError($"지정된 경로에 파일이 존재하지 않습니다: {filePath}");
+        }
     }
 
     // Update is called once per frame
@@ -54,7 +94,7 @@ public class Spawner : MonoBehaviour
         GameObject enemy = PoolManager.instance.Get(0);
 
         //랜덤한 스폰 포인트에 적 오브젝트 생성 (본인(Spawner)를 제외하고 자식 오브젝트(Point)에 생성)
-        enemy.transform.position = spawnPoint[Random.Range(1, spawnPoint.Length)].position;
+        enemy.transform.position = spawnPoint[UnityEngine.Random.Range(1, spawnPoint.Length)].position;
         //레벨에 따라 다른 Enemy spawnData[]를 가져와 적용시킴
         enemy.GetComponent<Enemy>().Init(spawnData[level]);
     }
@@ -99,7 +139,7 @@ public class Spawner : MonoBehaviour
         void SpawnRanged(RangedSpawnData data)
         {
             GameObject enemy = PoolManager.instance.Get(rangedPrefabId);
-            enemy.transform.position = spawnPoint[Random.Range(1, spawnPoint.Length)].position;
+            enemy.transform.position = spawnPoint[UnityEngine.Random.Range(1, spawnPoint.Length)].position;
 
             // 원거리 몬스터 전용 초기화 함수 호출
             enemy.GetComponent<RangedEnemy>().InitRanged(data);
